@@ -35,7 +35,8 @@ var OPTIONS = [
 
 function usage(msg) {
     var text = [
-        'ramsey -d <template directory> <input file> <output file>'
+        'ramsey [-d <template directory>] [-f <JSON file>] ' +
+        '<input file> <output file>'
     ];
 
     if (msg) {
