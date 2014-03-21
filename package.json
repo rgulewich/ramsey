@@ -1,7 +1,7 @@
 {
   "name": "ramsey",
   "description": "CLI for working with mustache templates",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Rob Gulewich <rob.gulewich@gmail.com>",
   "dependencies": {
     "dashdash": "1.4.0",
