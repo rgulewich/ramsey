@@ -25,6 +25,11 @@ var OPTIONS = [
         names: ['file', 'f'],
         type: 'string',
         help: 'JSON input file'
+    },
+    {
+        names: ['param', 'p'],
+        type: 'arrayOfString',
+        help: 'parameter(s) that control template rendering'
     }
 ];
 
@@ -54,6 +59,7 @@ function usage(msg) {
 
 
 var opts;
+var params = {};
 var parser = dashdash.createParser({ options: OPTIONS });
 
 try {
@@ -63,17 +69,36 @@ try {
     process.exit(1);
 }
 
-if (opts._args.length !== 2) {
-    usage('Must specify input and output file!');
+// console.log(JSON.stringify(opts, null, 2));
+
+if (opts._args.length === 0) {
+    usage('Must specify input file!');
 }
 
-if (!opts.hasOwnProperty('dir') && !opts.hasOwnProperty('file')) {
-    usage('Must specify template directory or file!');
+if (opts.hasOwnProperty('param')) {
+    opts.param.forEach(function (p) {
+        var parts = p.split('=', 2);
+        if (parts.length != 2) {
+            usage('Invalid parameter: ' + p);
+        }
+
+        params[parts[0]] = parts[1];
+    });
+}
+
+// console.log(JSON.stringify(params, null, 2));
+
+if (params.hasOwnProperty('wrap')) {
+    params.wrap = Number(params.wrap);
+    if (isNaN(params.wrap)) {
+        usage('wrap parameter must be a number!');
+    }
 }
 
 template.generateFile({
     dir: opts.dir,
     file: opts.file,
     inFile: opts._args[0],
-    outFile: opts._args[1]
+    outFile: opts._args[1],
+    params: params
 });
